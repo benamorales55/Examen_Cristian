@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Persona;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,4 +24,34 @@ Route::get('/persona/borrar/{id}','PersonaController@borrar');
 Route::post('/persona/nueva','PersonaController@crear');
 Route::get('crear',function(){
     return view('nuevo');
+});
+
+
+//sql
+Route::get('/insertar','PersonaController@insertar');
+Route::get('/destroy/{id}','PersonaController@destroy');
+Route::get('/update/{id}','PersonaController@update');
+Route::get('/mostrar','PersonaController@mostrar');
+
+
+//orm
+
+Route::get('/orm/leer',function(){
+    $persona = Persona::All();
+    foreach($persona as $per){
+        echo $per->Nombre;
+        echo "<br/>";
+    }
+});
+
+
+Route::get('/orm/actualizar',function(){
+    Persona::where("ID",7)->update([
+        'Nombre'=>"Laura Pancini"
+    ]);
+});
+
+Route::get("/orm/borrar",function(){
+    $persona = Persona::findOrFail(7);
+    $persona->delete();
 });
